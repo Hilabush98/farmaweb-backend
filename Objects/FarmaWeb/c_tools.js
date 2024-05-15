@@ -1,6 +1,8 @@
 import { cTools } from "../../Modelsdb/index.js";
 
 const typeDefs_c_Tools = `
+scalar JSON
+scalar Date
 type cTools {
     tool_id: Int
     tool_id_father: Int
@@ -9,11 +11,11 @@ type cTools {
     description:String
     order_by: Int
     is_active: Int
-    configuration:String
+    configuration:JSON
     path:String
     created_by: String
     modified_by: String
-    created_on: String
+    created_on: Date
     modified_on: String
 }
 type Response {
@@ -36,6 +38,7 @@ const resolver_c_Tools = {
         return data;
       } catch (error) {
         console.log(error);
+        return null;
       }
     },
   },

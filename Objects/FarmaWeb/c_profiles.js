@@ -1,8 +1,9 @@
-import { cProfiles } from "../../Modelsdb/index.js";
+import { cProfiles, cTools } from "../../Modelsdb/index.js";
 
 const typeDefs_c_Profiles = `
 type cProfiles {
     profile_id: Int
+    profileTools:[rProfilesTools]
     name: String
     description:String
     order_by: Int
@@ -34,6 +35,10 @@ const resolver_c_Profiles = {
         console.log(error);
       }
     },
+  },
+  cProfiles: {
+    profileTools: async ({ profile_id }) =>
+      cTools.findAll({ where: { profile_id } }),
   },
 };
 

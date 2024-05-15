@@ -1,10 +1,10 @@
-import { cGroups, cProfiles } from "../../Modelsdb/index.js";
+import { cGroups, rProfilesTools } from "../../Modelsdb/index.js";
 
 const typeDefs_c_Groups = `
 type cGroups {
     group_id: Int
     profile_id: Int
-    profile:cProfiles
+    rProfile:[rProfilesTools]
     name: String
     description:String
     order_by: Int
@@ -22,6 +22,7 @@ type Response {
 
 type Query {
     getAllGroups: [cGroups]
+    getGropsByName:[cGroups]
 }
 
 `;
@@ -36,9 +37,25 @@ const resolver_c_Groups = {
         console.log(error);
       }
     },
+    getGropsByName: async (_, params, context) => {
+      try {
+        const data = await cGroups.findAll({
+          where: {
+            name: context.groups,
+            is_active: 1,
+          },
+        });
+        return data;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    },
   },
+
   cGroups: {
-    profile: async ({ profile_id }) => await cProfiles.findByPk(profile_id),
+    rProfile: async ({ profile_id }) =>
+      await rProfilesTools.findAll({ where: { profile_id } }),
   },
 };
 
